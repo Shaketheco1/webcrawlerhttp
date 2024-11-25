@@ -1,5 +1,5 @@
 
-const {normalizeURL} = require("./crawl")
+const {normalizeURL,getURLsFromHTML} = require("./crawl")
 const {test, expect} = require("@jest/globals")
 
 test('normalizeURL', () => {
@@ -21,3 +21,40 @@ test('normalizeURL strip '/'', () => {
     const actual = normalizeURL(input)
     expect(actual).toEqual(expected)
 })
+
+
+test('getURLFromHTML 1', () => {
+    const inputHTMLBody = `
+    <html>
+        <body>
+            <a href="/path/">
+                example
+            </a>
+        </body>
+    </html>
+`
+    const inputBaseURL = "http://example.com"
+    const expected = ["http://example.com/path/"]
+    const actual = getURLsFromHTML(inputHTMLBody, inputBaseURL)
+    expect(actual).toEqual(expected)
+})
+
+test('getURLFromHTML 1', () => {
+    const inputHTMLBody = `
+    <html>
+        <body>
+            <a href="invaild">
+                invaild URL
+            </a>
+        </body>
+    </html>
+`
+    const inputBaseURL = "http://example.com"
+    const expected = []
+    const actual = getURLsFromHTML(inputHTMLBody, inputBaseURL)
+    expect(actual).toEqual(expected)
+})
+
+
+
+
